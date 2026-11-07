@@ -1,0 +1,694 @@
+
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agung Cell - Toko HP Seken Murah & Berkualitas</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Alpine JS untuk State Management Sederhana & Efisien -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#ecfdf5',
+                            100: '#d1fae5',
+                            400: '#34d399',
+                            500: '#10b981',
+                            600: '#059669',
+                            700: '#047857',
+                            800: '#065f46',
+                            900: '#064e3b',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #059669;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #047857;
+        }
+
+        /* Pulse Animation Floating WA */
+        @keyframes pulse-ring {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+            70% { transform: scale(1.05); box-shadow: 0 0 0 18px rgba(16, 185, 129, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+        }
+        .pulse-wa {
+            animation: pulse-ring 2s infinite;
+        }
+
+        /* Phone Glowing Animation untuk Splash Screen */
+        @keyframes phoneGlow {
+            0%, 100% { transform: scale(1) rotate(0deg); filter: drop-shadow(0 0 20px rgba(16, 185, 129, 0.7)); }
+            50% { transform: scale(1.1) rotate(6deg); filter: drop-shadow(0 0 35px rgba(52, 211, 153, 0.9)); }
+        }
+        .glow-phone {
+            animation: phoneGlow 2.2s ease-in-out infinite;
+        }
+
+        /* ANIMASI IKON BERTERBANGAN / FLOATING PARTICLES */
+        @keyframes floatParticle {
+            0% {
+                transform: translateY(105vh) rotate(0deg) scale(0.7);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.35;
+            }
+            90% {
+                opacity: 0.35;
+            }
+            100% {
+                transform: translateY(-10vh) rotate(360deg) scale(1.2);
+                opacity: 0;
+            }
+        }
+
+        .bg-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            color: #059669;
+            opacity: 0;
+            animation: floatParticle linear infinite;
+        }
+    </style>
+</head>
+<body class="bg-white text-gray-800 font-sans antialiased selection:bg-brand-500 selection:text-white relative" x-data="agungCellApp()">
+
+    <!-- ========================================== -->
+    <!-- ELEMEN ANIMASI IKON BERTERBANGAN           -->
+    <!-- ========================================== -->
+    <div class="bg-particles">
+        <!-- Ikon-ikon gadget & bintang melayang lembut di background -->
+        <i class="particle fa-solid fa-mobile-screen text-2xl" style="left: 8%; animation-duration: 14s; animation-delay: 0s;"></i>
+        <i class="particle fa-solid fa-bolt text-xl" style="left: 18%; animation-duration: 18s; animation-delay: 3s;"></i>
+        <i class="particle fa-solid fa-cart-shopping text-3xl" style="left: 28%; animation-duration: 16s; animation-delay: 1s;"></i>
+        <i class="particle fa-solid fa-star text-lg" style="left: 42%; animation-duration: 20s; animation-delay: 5s;"></i>
+        <i class="particle fa-solid fa-mobile text-3xl" style="left: 55%; animation-duration: 15s; animation-delay: 2s;"></i>
+        <i class="particle fa-solid fa-shield-halved text-2xl" style="left: 68%; animation-duration: 19s; animation-delay: 4s;"></i>
+        <i class="particle fa-solid fa-sim-card text-xl" style="left: 78%; animation-duration: 13s; animation-delay: 6s;"></i>
+        <i class="particle fa-solid fa-gem text-2xl" style="left: 88%; animation-duration: 17s; animation-delay: 1.5s;"></i>
+        <i class="particle fa-solid fa-gift text-xl" style="left: 95%; animation-duration: 21s; animation-delay: 7s;"></i>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- 1. ANIMASI OPENING / SPLASH SCREEN         -->
+    <!-- ========================================== -->
+    <div id="splash-screen" class="fixed inset-0 z-50 bg-white flex flex-col items-center justify-center transition-opacity duration-700">
+        <div class="relative flex flex-col items-center">
+            <!-- Animated Glowing Logo -->
+            <div class="w-24 h-24 bg-gradient-to-tr from-brand-700 via-brand-600 to-emerald-400 rounded-3xl flex items-center justify-center shadow-2xl mb-6 glow-phone">
+                <i class="fa-solid fa-mobile-screen-button text-white text-5xl"></i>
+            </div>
+            
+            <!-- Brand Title -->
+            <h1 class="text-3xl md:text-4xl font-black tracking-tight text-gray-900 mb-1">
+                AGUNG <span class="text-brand-600">CELL</span>
+            </h1>
+            <p class="text-gray-500 font-semibold text-xs md:text-sm mb-6 animate-pulse">Pusat Jual Beli HP Seken Murah & Bergaransi</p>
+            
+            <!-- Animated Loading Bar -->
+            <div class="w-48 bg-gray-100 rounded-full h-2 overflow-hidden shadow-inner">
+                <div class="bg-gradient-to-r from-brand-600 to-emerald-400 h-full rounded-full animate-pulse w-full"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- 2. HEADER / TITLE BAR (WARNA HIJAU)        -->
+    <!-- ========================================== -->
+    <header class="sticky top-0 z-40 bg-gradient-to-r from-brand-800 via-brand-600 to-emerald-600 text-white shadow-xl">
+        <!-- Top Bar Notice -->
+        <div class="bg-black/15 py-1.5 text-center text-xs text-emerald-100 font-medium px-4 backdrop-blur-sm">
+            ✨ Selamat Datang di <b>Agung Cell</b> — Promo HP Seken Murah Berkualitas & Bergaransi Toko! ✨
+        </div>
+        
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16 md:h-20">
+                <!-- Brand Logo & Nama Agung Cell -->
+                <a href="#" class="flex items-center gap-3 group">
+                    <div class="w-10 h-10 md:w-12 md:h-12 bg-white/10 rounded-2xl flex items-center justify-center backdrop-blur-md border border-white/20 group-hover:scale-110 transition-transform duration-300 shadow-md">
+                        <i class="fa-solid fa-store text-white text-xl md:text-2xl"></i>
+                    </div>
+                    <div>
+                        <span class="text-xl md:text-2xl font-black tracking-wider block leading-none">AGUNG <span class="text-emerald-300">CELL</span></span>
+                        <span class="text-[10px] md:text-xs text-emerald-100 font-medium tracking-wide">HP Seken Murah, Mulus & Bergaransi</span>
+                    </div>
+                </a>
+
+                <!-- Desktop Navigation Menu -->
+                <nav class="hidden md:flex items-center space-x-6 text-sm font-semibold">
+                    <a href="#katalog" class="hover:text-emerald-200 transition-colors py-2">Katalog HP</a>
+                    <a href="#keunggulan" class="hover:text-emerald-200 transition-colors py-2">Keunggulan Toko</a>
+                    <a href="#faq" class="hover:text-emerald-200 transition-colors py-2">Tanya Jawab (FAQ)</a>
+                </nav>
+
+                <!-- Header WA Button (Direct Link to 082269492867) -->
+                <div class="flex items-center gap-3">
+                    <a :href="linkWAUtama" 
+                       target="_blank" 
+                       class="inline-flex items-center gap-2 bg-white text-brand-700 hover:bg-emerald-50 px-4 py-2 md:px-5 md:py-2.5 rounded-full font-bold text-xs md:text-sm shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200">
+                        <i class="fa-brands fa-whatsapp text-lg text-emerald-600"></i>
+                        <span>Chat WA Admin</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="relative z-10">
+        <!-- ========================================== -->
+        <!-- 3. HERO BANNER SECTION                     -->
+        <!-- ========================================== -->
+        <section class="relative py-10 md:py-16 overflow-hidden">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+                <div class="text-center max-w-3xl mx-auto">
+                    <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-extrabold bg-brand-100 text-brand-800 mb-4 shadow-sm border border-brand-200 animate-bounce">
+                        <i class="fa-solid fa-circle-check text-brand-600"></i> Unit 100% Original & Mulus Bergaransi
+                    </span>
+                    <h2 class="text-3xl md:text-5xl font-black text-gray-900 tracking-tight leading-tight mb-4">
+                        Cari HP Seken Berkualitas? <br class="hidden sm:inline"/>
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-600 via-emerald-600 to-teal-600">Agung Cell Solusi Terbaiknya!</span>
+                    </h2>
+                    <p class="text-sm md:text-base text-gray-600 mb-8 leading-relaxed max-w-2xl mx-auto">
+                        Semua unit HP di <b>Agung Cell</b> telah diuji fungsi secara ketat. Siap pakai, kondisi mulus, bebas reset, dan dijamin bergaransi toko!
+                    </p>
+
+                    <!-- Search Bar & Filter -->
+                    <div class="max-w-xl mx-auto">
+                        <div class="relative flex items-center shadow-lg rounded-2xl overflow-hidden border border-gray-200 bg-white focus-within:ring-2 focus-within:ring-brand-500 transition-all">
+                            <i class="fa-solid fa-magnifying-glass text-brand-600 absolute left-4 text-lg"></i>
+                            <input type="text" 
+                                   x-model="searchQuery" 
+                                   placeholder="Cari tipe HP... (contoh: iPhone 11, Samsung A54, Oppo)" 
+                                   class="w-full pl-12 pr-4 py-3.5 text-sm md:text-base outline-none text-gray-800">
+                            <button x-show="searchQuery" @click="searchQuery = ''" class="pr-4 text-gray-400 hover:text-gray-600">
+                                <i class="fa-solid fa-xmark"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- 4. KATALOG PRODUK HP SEKEN                -->
+        <!-- ========================================== -->
+        <section id="katalog" class="py-10 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <!-- Filter Kategori Brand Tabs -->
+                <div class="flex items-center justify-start md:justify-center gap-2 overflow-x-auto pb-4 mb-8">
+                    <template x-for="category in categories" :key="category">
+                        <button @click="selectedCategory = category"
+                                :class="selectedCategory === category 
+                                    ? 'bg-brand-600 text-white shadow-md shadow-brand-500/30 scale-105' 
+                                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'"
+                                class="px-5 py-2.5 rounded-xl font-bold text-xs md:text-sm whitespace-nowrap transition-all duration-200 transform">
+                            <span x-text="category"></span>
+                        </button>
+                    </template>
+                </div>
+
+                <!-- Grid Produk HP -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    <template x-for="product in filteredProducts" :key="product.id">
+                        <div class="bg-white rounded-2xl border border-gray-200 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col overflow-hidden group transform hover:-translate-y-1 relative">
+                            
+                            <!-- Box Foto Produk (Klik Buka Modal / WA) -->
+                            <div class="relative bg-gray-50 pt-[100%] overflow-hidden cursor-pointer" @click="openModal(product)">
+                                <!-- Badge Kondisi -->
+                                <span class="absolute top-3 left-3 z-10 bg-brand-600 text-white text-[10px] font-black px-2.5 py-1 rounded-lg shadow uppercase tracking-wider"
+                                      x-text="product.kondisi">
+                                </span>
+                                
+                                <!-- Badge Kelengkapan -->
+                                <span class="absolute top-3 right-3 z-10 bg-gray-900/80 backdrop-blur-sm text-white text-[10px] font-medium px-2.5 py-1 rounded-lg shadow"
+                                      x-text="product.kelengkapan">
+                                </span>
+
+                                <!-- Foto Produk (Bisa diisi URL foto sendiri nanti) -->
+                                <img :src="product.foto" 
+                                     :alt="product.nama"
+                                     class="absolute inset-0 w-full h-full object-contain p-6 group-hover:scale-110 transition-transform duration-500"
+                                     onerror="this.src='https://placehold.co/500x500/f3f4f6/10b981?text=Foto+HP+Agung+Cell'">
+                            </div>
+
+                            <!-- Detail Singkat Produk -->
+                            <div class="p-5 flex-1 flex flex-col justify-between bg-white">
+                                <div>
+                                    <!-- Brand Name -->
+                                    <span class="text-xs font-bold text-brand-600 uppercase tracking-wider block mb-1" x-text="product.brand"></span>
+                                    
+                                    <!-- Product Name -->
+                                    <h3 class="font-extrabold text-gray-900 text-base md:text-lg leading-snug line-clamp-1 group-hover:text-brand-600 transition-colors cursor-pointer" 
+                                        @click="openModal(product)"
+                                        x-text="product.nama">
+                                    </h3>
+
+                                    <!-- Harga HP -->
+                                    <div class="mt-3 flex items-baseline gap-2">
+                                        <span class="text-lg md:text-xl font-black text-gray-900" x-text="formatRupiah(product.harga)"></span>
+                                        <span x-show="product.hargaCoret" class="text-xs text-gray-400 line-through" x-text="formatRupiah(product.hargaCoret)"></span>
+                                    </div>
+
+                                    <!-- Deskripsi Singkat untuk Pembeli -->
+                                    <p class="mt-2 text-xs text-gray-500 line-clamp-2 leading-relaxed" x-text="product.deskripsiSingkat"></p>
+                                </div>
+
+                                <!-- Action Buttons (Langsung Link WA & Deskripsi Detail) -->
+                                <div class="mt-5 space-y-2 pt-3 border-t border-gray-100">
+                                    <!-- Tombol Beli Langsung via WA -->
+                                    <a :href="generateWALink(product.nama, product.harga)" 
+                                       target="_blank"
+                                       class="w-full bg-gradient-to-r from-brand-600 to-emerald-600 hover:from-brand-700 hover:to-emerald-700 text-white font-bold py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 text-xs md:text-sm shadow-md hover:shadow-lg transition-all duration-200">
+                                        <i class="fa-brands fa-whatsapp text-lg"></i>
+                                        <span>Beli via WhatsApp</span>
+                                    </a>
+
+                                    <!-- Tombol Detail / Deskripsi HP -->
+                                    <button @click="openModal(product)"
+                                            class="w-full bg-gray-50 hover:bg-gray-100 text-gray-700 font-bold py-2 px-4 rounded-xl text-xs flex items-center justify-center gap-1.5 transition-colors border border-gray-200">
+                                        <i class="fa-solid fa-eye text-brand-600"></i>
+                                        <span>Lihat Deskripsi Lengkap</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+
+                <!-- Jika Cari Tipe HP Tidak Ditemukan -->
+                <div x-show="filteredProducts.length === 0" class="text-center py-16">
+                    <i class="fa-solid fa-mobile-xmark text-6xl text-gray-300 mb-3"></i>
+                    <h3 class="text-lg font-bold text-gray-700">Tipe HP Tidak Ditemukan</h3>
+                    <p class="text-xs text-gray-500 mt-1 mb-4">Ingin cari tipe lain? Langsung tanyakan stok ke Admin Agung Cell via WA!</p>
+                    <a :href="'https://wa.me/' + nomorWA + '?text=' + encodeURIComponent('Halo Agung Cell, mau tanya stok HP seken tipe lain yang belum ada di katalog website.')"
+                       target="_blank"
+                       class="inline-flex items-center gap-2 bg-brand-600 text-white px-5 py-2.5 rounded-xl font-bold text-xs">
+                        <i class="fa-brands fa-whatsapp text-lg"></i>
+                        <span>Tanyakan Tipe HP via WA</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- 5. KEUNGGULAN AGUNG CELL                  -->
+        <!-- ========================================== -->
+        <section id="keunggulan" class="py-12 bg-gray-50 border-y border-gray-100">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-10">
+                    <h2 class="text-2xl md:text-3xl font-black text-gray-900">Mengapa Beli HP Seken di Agung Cell?</h2>
+                    <p class="text-xs md:text-sm text-gray-500 mt-1">Jaminan kualitas unit, pelayanan ramah, dan garansi pasti.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-200 flex items-start gap-4">
+                        <div class="w-12 h-12 rounded-2xl bg-brand-100 flex items-center justify-center text-brand-700 text-xl flex-shrink-0">
+                            <i class="fa-solid fa-shield-heart"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-gray-900 text-base">Garansi Toko Terjamin</h4>
+                            <p class="text-xs text-gray-500 mt-1 leading-relaxed">Semua unit HP bergaransi toko. Apabila ada kendala fungsi, kami bantu proses perbaikan / ganti unit dengan responsif.</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-200 flex items-start gap-4">
+                        <div class="w-12 h-12 rounded-2xl bg-brand-100 flex items-center justify-center text-brand-700 text-xl flex-shrink-0">
+                            <i class="fa-solid fa-list-check"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-gray-900 text-base">Cek Fungsi Lengkap (QC)</h4>
+                            <p class="text-xs text-gray-500 mt-1 leading-relaxed">Kamera, layar, sinyal, baterai, speaker, dan fitur-fitur penting lainnya telah dites 100% normal sebelum dijual.</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-200 flex items-start gap-4">
+                        <div class="w-12 h-12 rounded-2xl bg-brand-100 flex items-center justify-center text-brand-700 text-xl flex-shrink-0">
+                            <i class="fa-solid fa-handshake"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-gray-900 text-base">Bisa COD / Cek Sepuasnya</h4>
+                            <p class="text-xs text-gray-500 mt-1 leading-relaxed">Siap transaksi COD area terdekat atau pengiriman aman ke seluruh wilayah dengan packing bubble wrap tebal.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- 6. TANYA JAWAB (FAQ) + LINK WA             -->
+        <!-- ========================================== -->
+        <section id="faq" class="py-12 bg-white">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-10">
+                    <span class="text-brand-600 font-extrabold text-xs tracking-wider uppercase">Pusat Bantuan</span>
+                    <h2 class="text-2xl md:text-3xl font-black text-gray-900 mt-1">Tanya Jawab Seputar Pembelian</h2>
+                </div>
+
+                <div class="space-y-4">
+                    <template x-for="(faq, index) in faqs" :key="index">
+                        <div class="border border-gray-200 rounded-2xl overflow-hidden transition-all duration-200">
+                            <button @click="faq.open = !faq.open" 
+                                    class="w-full p-5 text-left font-bold text-gray-800 flex justify-between items-center bg-white hover:bg-gray-50 transition-colors">
+                                <span class="text-sm md:text-base" x-text="faq.q"></span>
+                                <i class="fa-solid fa-chevron-down text-brand-600 transition-transform duration-200" :class="{'rotate-180': faq.open}"></i>
+                            </button>
+                            <div x-show="faq.open" x-collapse class="p-5 pt-0 text-xs md:text-sm text-gray-600 bg-white border-t border-gray-100 leading-relaxed" x-text="faq.a"></div>
+                        </div>
+                    </template>
+                </div>
+
+                <!-- Box Tanya Jawab Langsung via WA -->
+                <div class="mt-8 p-6 bg-gradient-to-br from-brand-50 to-emerald-100 rounded-3xl text-center border border-brand-200 shadow-md">
+                    <div class="w-12 h-12 bg-brand-600 text-white rounded-full flex items-center justify-center mx-auto mb-3 text-xl shadow-md">
+                        <i class="fa-solid fa-comments"></i>
+                    </div>
+                    <h4 class="font-extrabold text-brand-900 text-base md:text-lg">Masih Punya Pertanyaan Lain?</h4>
+                    <p class="text-xs md:text-sm text-brand-800 mt-1 mb-4">Klik tombol di bawah ini untuk langsung terhubung dengan WhatsApp Admin Agung Cell (082269492867).</p>
+                    <a :href="'https://wa.me/' + nomorWA + '?text=' + encodeURIComponent('Halo Admin Agung Cell, saya mau tanya-tanya seputar stok HP seken dan lokasi toko.')" 
+                       target="_blank"
+                       class="inline-flex items-center gap-2 bg-brand-600 hover:bg-brand-700 text-white font-extrabold py-3 px-6 rounded-full text-xs md:text-sm shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105">
+                        <i class="fa-brands fa-whatsapp text-xl"></i>
+                        <span>Tanya Jawab via WhatsApp</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- 7. MODAL DETAIL PRODUK DESKRIPSI           -->
+    <!-- ========================================== -->
+    <div x-show="isModalOpen" 
+         x-transition:enter="transition ease-out duration-300"
+         x-transition:enter-start="opacity-0"
+         x-transition:enter-end="opacity-100"
+         x-transition:leave="transition ease-in duration-200"
+         x-transition:leave-start="opacity-100"
+         x-transition:leave-end="opacity-0"
+         class="fixed inset-0 z-50 overflow-y-auto bg-black/60 backdrop-blur-sm flex items-center justify-center p-4" 
+         style="display: none;">
+        
+        <div @click.away="closeModal()" 
+             class="bg-white rounded-3xl max-w-2xl w-full overflow-hidden shadow-2xl transform transition-all relative my-8">
+            
+            <!-- Close Button -->
+            <button @click="closeModal()" class="absolute top-4 right-4 z-20 bg-gray-100 hover:bg-gray-200 text-gray-600 w-9 h-9 rounded-full flex items-center justify-center transition-colors">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+
+            <template x-if="activeProduct">
+                <div class="flex flex-col md:flex-row">
+                    <!-- Modal Foto HP -->
+                    <div class="md:w-1/2 bg-gray-50 p-6 flex items-center justify-center relative min-h-[250px]">
+                        <img :src="activeProduct.foto" :alt="activeProduct.nama" class="max-h-64 object-contain" onerror="this.src='https://placehold.co/500x500/f3f4f6/10b981?text=Foto+HP+Agung+Cell'">
+                    </div>
+
+                    <!-- Modal Deskripsi Produk -->
+                    <div class="md:w-1/2 p-6 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center gap-2 mb-2">
+                                <span class="bg-brand-100 text-brand-800 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full" x-text="activeProduct.kondisi"></span>
+                                <span class="bg-gray-100 text-gray-700 text-[10px] font-bold px-2.5 py-0.5 rounded-full" x-text="activeProduct.kelengkapan"></span>
+                            </div>
+
+                            <h3 class="text-xl font-black text-gray-900 leading-tight" x-text="activeProduct.nama"></h3>
+                            
+                            <div class="mt-3 flex items-baseline gap-2">
+                                <span class="text-2xl font-black text-brand-600" x-text="formatRupiah(activeProduct.harga)"></span>
+                                <span x-show="activeProduct.hargaCoret" class="text-xs text-gray-400 line-through" x-text="formatRupiah(activeProduct.hargaCoret)"></span>
+                            </div>
+
+                            <!-- Deskripsi Detail HP -->
+                            <div class="mt-4 pt-4 border-t border-gray-100">
+                                <h4 class="text-xs font-bold text-gray-900 uppercase tracking-wider mb-2">Deskripsi & Kondisi Unit:</h4>
+                                <div class="text-xs text-gray-600 space-y-1.5 leading-relaxed whitespace-pre-line" x-text="activeProduct.deskripsiLengkap"></div>
+                            </div>
+                        </div>
+
+                        <!-- Tombol Beli WA di Dalam Modal -->
+                        <div class="mt-6 pt-4 border-t border-gray-100">
+                            <a :href="generateWALink(activeProduct.nama, activeProduct.harga)" 
+                               target="_blank"
+                               class="w-full bg-gradient-to-r from-brand-600 to-emerald-600 hover:from-brand-700 hover:to-emerald-700 text-white font-bold py-3 px-4 rounded-xl flex items-center justify-center gap-2 text-sm shadow-lg transition-all">
+                                <i class="fa-brands fa-whatsapp text-xl"></i>
+                                <span>Pesan via WA (082269492867)</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </template>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- 8. FLOATING WHATSAPP BUTTON (082269492867) -->
+    <!-- ========================================== -->
+    <a :href="linkWAUtama"
+       target="_blank"
+       aria-label="Tanya Jawab WhatsApp Agung Cell"
+       class="fixed bottom-6 right-6 z-40 bg-brand-500 hover:bg-brand-600 text-white w-14 h-14 rounded-full flex items-center justify-center shadow-2xl transition-transform transform hover:scale-110 pulse-wa">
+        <i class="fa-brands fa-whatsapp text-3xl"></i>
+    </a>
+
+    <!-- ========================================== -->
+    <!-- 9. FOOTER TOKO AGUNG CELL                  -->
+    <!-- ========================================== -->
+    <footer class="bg-gray-900 text-gray-400 py-10 border-t border-gray-800 relative z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center md:text-left flex flex-col md:flex-row justify-between items-center gap-6">
+            <div>
+                <span class="text-xl font-black text-white tracking-wider">AGUNG <span class="text-brand-500">CELL</span></span>
+                <p class="text-xs text-gray-500 mt-1">Spesialis Jual Beli HP Seken Murah, Berkualitas, & Bergaransi.</p>
+                <p class="text-xs text-emerald-400 mt-1 font-semibold"><i class="fa-brands fa-whatsapp mr-1"></i> WA: 082269492867</p>
+            </div>
+            <div class="text-xs text-gray-500">
+                &copy; <span x-text="new Date().getFullYear()"></span> Agung Cell. Semua Hak Dilindungi.
+            </div>
+        </div>
+    </footer>
+
+    <!-- ========================================== -->
+    <!-- 10. JAVASCRIPT & DATA KATALOG AGUNG CELL   -->
+    <!-- ========================================== -->
+    <script>
+        // Splash screen hiding logic
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                const splash = document.getElementById('splash-screen');
+                if (splash) {
+                    splash.style.opacity = '0';
+                    splash.style.pointerEvents = 'none';
+                    setTimeout(() => splash.remove(), 700);
+                }
+            }, 1200);
+        });
+
+        function agungCellApp() {
+            return {
+                // NOMOR WHATSAPP AGUNG CELL: 082269492867
+                nomorWA: '6282269492867', 
+
+                searchQuery: '',
+                selectedCategory: 'Semua',
+                categories: ['Semua', 'Apple', 'Samsung', 'Xiaomi', 'Oppo / Vivo', 'Infinix'],
+                isModalOpen: false,
+                activeProduct: null,
+
+                get linkWAUtama() {
+                    return 'https://wa.me/' + this.nomorWA + '?text=' + encodeURIComponent('Halo Agung Cell, saya mau bertanya stok HP seken murah terbaru.');
+                },
+
+                // =========================================================================
+                // DATA PRODUK HP SEKEN AGUNG CELL (Silahkan Edit/Tambah Sesuai Stok Anda)
+                // =========================================================================
+                products: [
+                    {
+                        id: 1,
+                        brand: 'Apple',
+                        nama: 'iPhone 11 64GB Black - Seken Mulus',
+                        harga: 4500000,
+                        hargaCoret: 5200000,
+                        kondisi: '96% Mulus',
+                        kelengkapan: 'Fullset',
+                        foto: 'https://images.unsplash.com/photo-1574944985070-8f30c4397e3c?w=500&auto=format&fit=crop&q=60',
+                        deskripsiSingkat: 'BH 88%, TrueTone & Face ID Normal 100%, Bebas Reset.',
+                        deskripsiLengkap: `• Kondisi Fisik: 96% Mulus (Pemakaian Wajar)
+• Kapasitas: 64GB
+• Health Battery: 88% Original
+• Sinyal: All Operator Permanen
+• Kelengkapan: Box, Charger, Kabel data
+• Garansi Toko Agung Cell: 14 Hari Ganti Unit`
+                    },
+                    {
+                        id: 2,
+                        brand: 'Samsung',
+                        nama: 'Samsung Galaxy A54 5G 8/256GB',
+                        harga: 3450000,
+                        hargaCoret: 4100000,
+                        kondisi: '98% Like New',
+                        kelengkapan: 'Fullset Original',
+                        foto: 'https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=500&auto=format&fit=crop&q=60',
+                        deskripsiSingkat: 'Layar Super AMOLED 120Hz, Kamera 50MP OIS, Garansi SEIN aktif.',
+                        deskripsiLengkap: `• Kondisi Fisik: 98% Mulus Seperti Baru
+• RAM / Internal: 8GB / 256GB
+• Garansi SEIN Resmi Masih Aktif
+• Kelengkapan: Dusbook Original + Kabel Type C
+• Garansi Toko Agung Cell: 30 Hari`
+                    },
+                    {
+                        id: 3,
+                        brand: 'Xiaomi',
+                        nama: 'Redmi Note 12 Pro 5G 8/256GB',
+                        harga: 2350000,
+                        hargaCoret: 2800000,
+                        kondisi: '95% Mulus',
+                        kelengkapan: 'HP + Charger Fast Charging',
+                        foto: 'https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=500&auto=format&fit=crop&q=60',
+                        deskripsiSingkat: 'Kamera Sony IMX766 OIS, Layar AMOLED, Cas Kencang 67W.',
+                        deskripsiLengkap: `• Kondisi Fisik: 95% Mulus Normal
+• RAM / Internal: 8GB / 256GB
+• Kelengkapan: Unit HP + Charger Original 67W
+• Garansi Toko Agung Cell: 14 Hari`
+                    },
+                    {
+                        id: 4,
+                        brand: 'Oppo / Vivo',
+                        nama: 'Oppo Reno 8 5G 8/256GB',
+                        harga: 2750000,
+                        hargaCoret: 3300000,
+                        kondisi: '96% Mulus',
+                        kelengkapan: 'Fullset',
+                        foto: 'https://images.unsplash.com/photo-1580910051074-3eb694886505?w=500&auto=format&fit=crop&q=60',
+                        deskripsiSingkat: 'Desain Tipis Elegan, Pengecasan SuperVOOC Super Cepat.',
+                        deskripsiLengkap: `• Kondisi Fisik: 96% Mulus Mulus
+• RAM / Internal: 8GB / 256GB
+• Kelengkapan: Fullset Dusbook & Charger
+• Garansi Toko Agung Cell: 14 Hari`
+                    },
+                    {
+                        id: 5,
+                        brand: 'Infinix',
+                        nama: 'Infinix GT 10 Pro 5G 8/256GB Cyber Black',
+                        harga: 2150000,
+                        hargaCoret: 2600000,
+                        kondisi: '97% Mulus',
+                        kelengkapan: 'Fullset Lengkap',
+                        foto: 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=500&auto=format&fit=crop&q=60',
+                        deskripsiSingkat: 'HP Gaming Kencang Dimensity 8050, Layar AMOLED 120Hz.',
+                        deskripsiLengkap: `• Kondisi Fisik: 97% Mulus Lengkap
+• Chipset Gaming Sangat Kencang
+• RAM / Internal: 8GB / 256GB
+• Kelengkapan: Fullset
+• Garansi Toko Agung Cell: 14 Hari`
+                    },
+                    {
+                        id: 6,
+                        brand: 'Apple',
+                        nama: 'iPhone 12 128GB Blue - Seken Original',
+                        harga: 5850000,
+                        hargaCoret: 6700000,
+                        kondisi: '97% Mulus',
+                        kelengkapan: 'Fullset',
+                        foto: 'https://images.unsplash.com/photo-1605236453806-6ff36851218e?w=500&auto=format&fit=crop&q=60',
+                        deskripsiSingkat: 'Layar OLED Super Retina, Sinyal All Operator Aman, BH 89%.',
+                        deskripsiLengkap: `• Kondisi Fisik: 97% Mulus
+• Kapasitas: 128GB
+• Sinyal All Operator Aman Permanen
+• BH: 89% Original
+• Garansi Toko Agung Cell: 30 Hari`
+                    }
+                ],
+
+                // Data Tanya Jawab FAQ
+                faqs: [
+                    {
+                        q: 'Apakah semua HP seken di Agung Cell bergaransi?',
+                        a: 'Tentu saja! Semua unit HP seken di Agung Cell dijamin bergaransi toko (7 hingga 30 hari tergantung unit). Jika ada masalah fungsi, siap kami bantu ganti unit atau perbaiki gratis.',
+                        open: false
+                    },
+                    {
+                        q: 'Bagaimana cara membeli HP di Agung Cell?',
+                        a: 'Sangat mudah! Cukup klik tombol "Beli via WhatsApp" pada HP yang Anda pilih. Anda akan langsung terhubung ke WhatsApp Admin (082269492867) dengan pesan otomatis berisi tipe HP & harganya.',
+                        open: false
+                    },
+                    {
+                        q: 'Apakah bisa transaksi COD?',
+                        a: 'Bisa! Kami melayani COD di toko / wilayah sekitar atau pengiriman dengan opsi bayar di tempat.',
+                        open: false
+                    }
+                ],
+
+                // Filter Produk
+                get filteredProducts() {
+                    return this.products.filter(product => {
+                        const matchesCategory = this.selectedCategory === 'Semua' || product.brand === this.selectedCategory;
+                        const matchesSearch = product.nama.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
+                                              product.brand.toLowerCase().includes(this.searchQuery.toLowerCase());
+                        return matchesCategory && matchesSearch;
+                    });
+                },
+
+                // Helper Format Rupiah
+                formatRupiah(number) {
+                    return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(number);
+                },
+
+                // Helper Link WhatsApp Otomatis dengan Detail Produk
+                generateWALink(namaProduk, harga) {
+                    const text = `Halo Agung Cell, saya mau beli HP seken ini:\n\n📱 *Tipe HP:* ${namaProduk}\n💰 *Harga:* ${this.formatRupiah(harga)}\n\nApakah unit ini masih ready di toko?`;
+                    return `https://wa.me/${this.nomorWA}?text=${encodeURIComponent(text)}`;
+                },
+
+                // Fungsi Modal Detail Produk
+                openModal(product) {
+                    this.activeProduct = product;
+                    this.isModalOpen = true;
+                },
+                closeModal() {
+                    this.isModalOpen = false;
+                    this.activeProduct = null;
+                }
+            }
+        }
+    </script>
+</body>
+</html>
+```
